@@ -16,7 +16,7 @@ Mandatory properties:
 package actions
 
 import (
-	"github.com/go-debos/debos"
+	"github.com/AaronDewes/debos"
 )
 
 type PacmanAction struct {

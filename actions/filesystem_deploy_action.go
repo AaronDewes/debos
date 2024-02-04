@@ -9,11 +9,11 @@ action requires 'image-partition' action to be executed before it.
 After this action has ran, subsequent actions are executed on the mounted output
 image.
 
- # Yaml syntax:
- - action: filesystem-deploy
-   setup-fstab: bool
-   setup-kernel-cmdline: bool
-   append-kernel-cmdline: arguments
+	# Yaml syntax:
+	- action: filesystem-deploy
+	  setup-fstab: bool
+	  setup-kernel-cmdline: bool
+	  append-kernel-cmdline: arguments
 
 Optional properties:
 
@@ -37,7 +37,7 @@ import (
 	"path"
 	"strings"
 
-	"github.com/go-debos/debos"
+	"github.com/AaronDewes/debos"
 )
 
 type FilesystemDeployAction struct {

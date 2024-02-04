@@ -1,7 +1,7 @@
 /*
 Package 'recipe' implements actions mapping to YAML recipe.
 
-Recipe syntax
+# Recipe syntax
 
 Recipe is a YAML file which is pre-processed though Golang
 text templating engine (https://golang.org/pkg/text/template)
@@ -14,21 +14,20 @@ Recipe is composed of 2 parts:
 
 Comments are allowed and should be prefixed with '#' symbol.
 
- # Declare variable 'Var'
- {{- $Var := "Value" -}}
+	# Declare variable 'Var'
+	{{- $Var := "Value" -}}
 
- # Header
- architecture: arm64
+	# Header
+	architecture: arm64
 
- # Actions are executed in listed order
- actions:
-   - action: ActionName1
-     property1: true
+	# Actions are executed in listed order
+	actions:
+	  - action: ActionName1
+	    property1: true
 
-   - action: ActionName2
-     # Use value of variable 'Var' defined above
-     property2: {{$Var}}
-
+	  - action: ActionName2
+	    # Use value of variable 'Var' defined above
+	    property2: {{$Var}}
 
 The following custom template functions are available:
 
@@ -43,53 +42,54 @@ Mandatory properties for recipe:
 
 - actions -- at least one action should be listed
 
-Supported actions
+# Supported actions
 
-- apt -- https://godoc.org/github.com/go-debos/debos/actions#hdr-Apt_Action
+- apt -- https://godoc.org/github.com/AaronDewes/debos/actions#hdr-Apt_Action
 
-- debootstrap -- https://godoc.org/github.com/go-debos/debos/actions#hdr-Debootstrap_Action
+- debootstrap -- https://godoc.org/github.com/AaronDewes/debos/actions#hdr-Debootstrap_Action
 
-- download -- https://godoc.org/github.com/go-debos/debos/actions#hdr-Download_Action
+- download -- https://godoc.org/github.com/AaronDewes/debos/actions#hdr-Download_Action
 
-- filesystem-deploy -- https://godoc.org/github.com/go-debos/debos/actions#hdr-FilesystemDeploy_Action
+- filesystem-deploy -- https://godoc.org/github.com/AaronDewes/debos/actions#hdr-FilesystemDeploy_Action
 
-- image-partition -- https://godoc.org/github.com/go-debos/debos/actions#hdr-ImagePartition_Action
+- image-partition -- https://godoc.org/github.com/AaronDewes/debos/actions#hdr-ImagePartition_Action
 
-- ostree-commit -- https://godoc.org/github.com/go-debos/debos/actions#hdr-OstreeCommit_Action
+- ostree-commit -- https://godoc.org/github.com/AaronDewes/debos/actions#hdr-OstreeCommit_Action
 
-- ostree-deploy -- https://godoc.org/github.com/go-debos/debos/actions#hdr-OstreeDeploy_Action
+- ostree-deploy -- https://godoc.org/github.com/AaronDewes/debos/actions#hdr-OstreeDeploy_Action
 
-- overlay -- https://godoc.org/github.com/go-debos/debos/actions#hdr-Overlay_Action
+- overlay -- https://godoc.org/github.com/AaronDewes/debos/actions#hdr-Overlay_Action
 
-- pack -- https://godoc.org/github.com/go-debos/debos/actions#hdr-Pack_Action
+- pack -- https://godoc.org/github.com/AaronDewes/debos/actions#hdr-Pack_Action
 
-- pacman -- https://godoc.org/github.com/go-debos/debos/actions#hdr-Pacman_Action
+- pacman -- https://godoc.org/github.com/AaronDewes/debos/actions#hdr-Pacman_Action
 
-- pacstrap -- https://godoc.org/github.com/go-debos/debos/actions#hdr-Pacstrap_Action
+- pacstrap -- https://godoc.org/github.com/AaronDewes/debos/actions#hdr-Pacstrap_Action
 
-- raw -- https://godoc.org/github.com/go-debos/debos/actions#hdr-Raw_Action
+- raw -- https://godoc.org/github.com/AaronDewes/debos/actions#hdr-Raw_Action
 
-- recipe -- https://godoc.org/github.com/go-debos/debos/actions#hdr-Recipe_Action
+- recipe -- https://godoc.org/github.com/AaronDewes/debos/actions#hdr-Recipe_Action
 
-- run -- https://godoc.org/github.com/go-debos/debos/actions#hdr-Run_Action
+- run -- https://godoc.org/github.com/AaronDewes/debos/actions#hdr-Run_Action
 
-- unpack -- https://godoc.org/github.com/go-debos/debos/actions#hdr-Unpack_Action
+- unpack -- https://godoc.org/github.com/AaronDewes/debos/actions#hdr-Unpack_Action
 */
 package actions
 
 import (
 	"bytes"
 	"fmt"
-	"github.com/go-debos/debos"
-	"gopkg.in/yaml.v2"
-	"github.com/alessio/shellescape"
-	"github.com/go-task/slim-sprig/v3"
-	"path"
-	"text/template"
 	"log"
-	"strings"
+	"path"
 	"reflect"
+	"strings"
+	"text/template"
+
+	"github.com/AaronDewes/debos"
+	"github.com/alessio/shellescape"
+	sprig "github.com/go-task/slim-sprig/v3"
 	"github.com/google/uuid"
+	"gopkg.in/yaml.v2"
 )
 
 /* the YamlAction just embed the Action interface and implements the
@@ -186,7 +186,7 @@ func DumpActionStruct(iface interface{}) string {
 const tabs = 2
 
 func DumpActions(iface interface{}, depth int) {
-	tab := strings.Repeat(" ", depth * tabs)
+	tab := strings.Repeat(" ", depth*tabs)
 	entries := reflect.ValueOf(iface)
 
 	for i := 0; i < entries.NumField(); i++ {
@@ -195,7 +195,7 @@ func DumpActions(iface interface{}, depth int) {
 			actions := reflect.ValueOf(entries.Field(i).Interface())
 			for j := 0; j < actions.Len(); j++ {
 				yaml := reflect.ValueOf(actions.Index(j).Interface())
-				DumpActionFields(yaml.Field(0).Interface(), depth + 1)
+				DumpActionFields(yaml.Field(0).Interface(), depth+1)
 			}
 		} else {
 			log.Printf("%s  %s: %v\n", tab, entries.Type().Field(i).Name, entries.Field(i).Interface())
@@ -204,7 +204,7 @@ func DumpActions(iface interface{}, depth int) {
 }
 
 func DumpActionFields(iface interface{}, depth int) {
-	tab := strings.Repeat(" ", depth * tabs)
+	tab := strings.Repeat(" ", depth*tabs)
 	entries := reflect.ValueOf(iface).Elem()
 
 	for i := 0; i < entries.NumField(); i++ {
@@ -252,7 +252,7 @@ func (r *Recipe) Parse(file string, printRecipe bool, dump bool, templateVars ..
 	funcs := template.FuncMap{
 		"sector": sector,
 		"escape": escape,
-		"uuid5": uuid5,
+		"uuid5":  uuid5,
 	}
 	t.Funcs(funcs)
 

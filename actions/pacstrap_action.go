@@ -21,7 +21,7 @@ import (
 	"os"
 	"path"
 
-	"github.com/go-debos/debos"
+	"github.com/AaronDewes/debos"
 	"github.com/go-debos/fakemachine"
 )
 
