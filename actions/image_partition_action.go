@@ -605,7 +605,7 @@ func (i ImagePartitionAction) Run(context *debos.DebosContext) error {
 	/* Now that all partitions are created (re)trigger all udev events for
 	 * the image file to make sure everything is in a reasonable state
 	 */
-	i.triggerDeviceNodes(context)
+	//i.triggerDeviceNodes(context)
 	return nil
 }
 
