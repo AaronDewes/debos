@@ -3,7 +3,6 @@ module github.com/AaronDewes/debos
 go 1.15
 
 require (
-	github.com/14rcole/gopopulate v0.0.0-20180821133914-b175b219e774 // indirect
 	github.com/alessio/shellescape v1.4.2
 	github.com/docker/go-units v0.5.0
 	github.com/go-debos/debos v0.0.0-00010101000000-000000000000
@@ -17,4 +16,4 @@ require (
 	gopkg.in/yaml.v2 v2.4.0
 )
 
-replace github.com/go-debos/debos => github.com/AaronDewes/debos v0.0.0-20240204175243-35ca34b34865
+replace github.com/go-debos/debos => ./
