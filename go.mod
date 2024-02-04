@@ -1,4 +1,4 @@
-module github.com/go-debos/debos
+module github.com/AaronDewes/debos
 
 go 1.15
 
@@ -15,3 +15,5 @@ require (
 	gopkg.in/freddierice/go-losetup.v1 v1.0.0-20170407175016-fc9adea44124
 	gopkg.in/yaml.v2 v2.4.0
 )
+
+replace github.com/go-debos/debos => github.com/AaronDewes/debos main
